@@ -28,7 +28,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: System :: Distributed Computing",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.104.1",
     "uvicorn[standard]>=0.24.0",
@@ -44,6 +44,7 @@ dependencies = [
     "structlog>=23.2.0",
     "click>=8.1.7",
     "rich>=13.7.0",
+    "typer>=0.17.4",
 ]
 
 [project.optional-dependencies]
@@ -189,3 +190,30 @@ exclude_lines = [
 [tool.bandit]
 exclude_dirs = ["tests"]
 skips = ["B101", "B601"]
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "flake8>=7.3.0",
+    "isort>=6.0.1",
+    "mypy>=1.18.1",
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.2.0",
+    "pytest-cov>=7.0.0",
+    "pytest-mock>=3.15.0",
+]
+docs = [
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.6.19",
+    "mkdocstrings[python]>=0.30.0",
+]
+llm = [
+    "anthropic>=0.67.0",
+    "google-generativeai>=0.8.5",
+    "ollama>=0.5.3",
+    "openai>=1.107.2",
+]
+nifi = [
+    "psutil>=7.0.0",
+]

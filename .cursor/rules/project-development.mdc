@@ -1,0 +1,210 @@
+---
+alwaysApply: true
+description: 프로젝트 개발 워크플로우 및 통합 가이드라인
+---
+
+# 프로젝트 개발 워크플로우
+
+## 개발 프로세스 통합
+
+### 1. 새로운 기능 개발 워크플로우
+
+#### Step 1: 요구사항 분석
+- **Sequential Thinking 활용**: 복잡한 기능의 경우 단계별 분석
+- **Context7 조회**: 관련 기술 스택 문서 확인
+- **DuckDuckGo 검색**: 최신 트렌드 및 베스트 프랙티스 조사
+
+#### Step 2: 의존성 관리
+```bash
+# UV로 필요한 패키지 추가
+uv add package-name
+
+# 개발 의존성 추가
+uv add --dev package-name
+
+# 특정 그룹으로 분류
+uv add --group llm openai anthropic
+uv add --group nifi pyyaml requests
+```
+
+#### Step 3: 개발 환경 설정
+```bash
+# 가상환경 동기화
+uv sync --group dev
+
+# 프로젝트 실행
+uv run python src/main.py
+```
+
+### 2. NiFi 통합 개발
+
+#### NiFi 관련 작업 시:
+1. **Context7로 NiFi 문서 조회**:
+   ```
+   mcp_context7-mcp_resolve-library-id: "apache nifi"
+   mcp_context7-mcp_get-library-docs: NiFi API 문서
+   ```
+
+2. **NiFi 환경 관리**:
+   ```bash
+   # UV 환경에서 NiFi 제어
+   uv run python src/cli/nifi_cli.py start
+   uv run python src/cli/nifi_cli.py status
+   ```
+
+3. **NiFi 관련 의존성**:
+   ```bash
+   uv add --group nifi pyyaml psutil requests
+   ```
+
+### 3. LLM 통합 개발
+
+#### LLM 관련 작업 시:
+1. **Context7로 LLM API 문서 조회**:
+   ```
+   OpenAI, Anthropic, Google Gemini API 문서
+   ```
+
+2. **LLM 의존성 관리**:
+   ```bash
+   uv add --group llm openai anthropic google-generativeai
+   uv add --group llm ollama  # 로컬 모델용
+   ```
+
+3. **환경 변수 관리**:
+   ```bash
+   # .env 파일에 API 키 설정
+   OPENAI_API_KEY=your_key
+   ANTHROPIC_API_KEY=your_key
+   ```
+
+### 4. 코드 품질 관리
+
+#### 개발 도구 설정:
+```bash
+# 코드 품질 도구 설치
+uv add --dev black isort mypy flake8 pytest
+
+# 코드 포매팅
+uv run black src/
+uv run isort src/
+
+# 타입 체크
+uv run mypy src/
+
+# 테스트 실행
+uv run pytest tests/
+```
+
+### 5. 문서화 및 배포
+
+#### 문서 생성:
+```bash
+# 문서 도구 설치
+uv add --group docs mkdocs mkdocs-material
+
+# 문서 빌드
+uv run --group docs mkdocs build
+
+# 문서 서버 실행
+uv run --group docs mkdocs serve
+```
+
+#### 배포 준비:
+```bash
+# 의존성 잠금 파일 업데이트
+uv lock
+
+# 배포용 requirements.txt 생성 (호환성)
+uv export --format requirements-txt > requirements.txt
+```
+
+### 6. 통합 개발 스크립트
+
+#### 개발 환경 초기화:
+```bash
+#!/bin/bash
+# scripts/dev_setup.sh
+
+# UV 설치 확인
+if ! command -v uv &> /dev/null; then
+    echo "Installing uv..."
+    pip install uv
+fi
+
+# 프로젝트 의존성 설치
+uv sync --group dev --group llm --group nifi
+
+# NiFi 환경 설정
+source config/nifi_env.sh
+
+# 개발 서버 시작
+uv run python src/api/main.py
+```
+
+#### 테스트 실행 스크립트:
+```bash
+#!/bin/bash
+# scripts/run_tests.sh
+
+# 코드 품질 검사
+uv run black --check src/
+uv run isort --check-only src/
+uv run mypy src/
+uv run flake8 src/
+
+# 테스트 실행
+uv run pytest tests/ --cov=src/
+```
+
+### 7. 프로젝트 구조 최적화
+
+#### 의존성 그룹별 구조:
+```
+src/
+├── core/          # 핵심 비즈니스 로직
+├── llm/           # LLM 통합 (llm 그룹)
+├── nifi/          # NiFi 통합 (nifi 그룹)
+├── api/           # REST API
+├── cli/           # CLI 도구
+└── utils/         # 공통 유틸리티
+
+pyproject.toml     # UV 의존성 정의
+uv.lock           # 의존성 잠금
+.python-version   # Python 버전
+```
+
+### 8. 개발 모범 사례
+
+#### MCP 도구 활용 패턴:
+1. **기술 조사**: Context7 → DuckDuckGo → Sequential Thinking
+2. **구현 계획**: Sequential Thinking → Context7 (API 확인)
+3. **문제 해결**: Context7 (공식 문서) → DuckDuckGo (커뮤니티)
+
+#### UV 사용 패턴:
+1. **의존성 추가**: 기능별 그룹으로 분류
+2. **환경 관리**: 개발/테스트/배포 환경 분리
+3. **스크립트 실행**: `uv run` 명령어 활용
+
+### 9. 성능 모니터링
+
+#### 개발 중 성능 체크:
+```bash
+# 의존성 크기 확인
+uv tree
+
+# 패키지 감사
+uv audit
+
+# 캐시 관리
+uv cache clean
+```
+
+### 10. 협업 가이드라인
+
+#### 팀 개발 시:
+1. **uv.lock 파일 커밋**: 정확한 의존성 재현
+2. **그룹별 의존성**: 기능별로 선택적 설치
+3. **Python 버전 통일**: .python-version 파일 활용
+
+이러한 통합 워크플로우를 통해 효율적이고 일관된 개발 환경을 유지해야 합니다.
