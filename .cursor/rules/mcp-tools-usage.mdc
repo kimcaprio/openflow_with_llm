@@ -24,23 +24,7 @@ description: MCP 도구 사용 가이드라인 및 우선순위
 2. mcp_context7-mcp_get-library-docs로 문서 조회
 ```
 
-### 2. Sequential Thinking Tools (복잡한 코드 생성)
-**언제 사용**: 프로젝트 진행에 필요한 복잡한 코드 생성 및 문제 해결
-
-**사용 우선순위**: 높음 - 다단계 개발 작업 시 필수 활용
-
-**사용 예시**:
-- 새로운 모듈 설계 및 구현
-- 복잡한 알고리즘 개발
-- 아키텍처 결정 및 구현
-- 다단계 리팩토링 작업
-
-**호출 방법**:
-```
-mcp_mcp-sequentialthinking-tools_sequentialthinking_tools
-```
-
-### 3. DuckDuckGo MCP Server (정보 검색)
+### 2. DuckDuckGo MCP Server (정보 검색)
 **언제 사용**: 최신 정보, 기술 트렌드, 또는 특정 문제 해결책 검색
 
 **사용 우선순위**: 중간 - Context7에서 찾을 수 없는 정보나 최신 정보 필요 시
@@ -60,20 +44,17 @@ mcp_mcp-sequentialthinking-tools_sequentialthinking_tools
 ## 도구 사용 우선순위
 
 1. **Context7-MCP**: 기술 문서 및 API 참조 (최우선)
-2. **Sequential Thinking**: 복잡한 개발 작업 (최우선)
-3. **DuckDuckGo**: 최신 정보 및 커뮤니티 솔루션 (보조)
+2. **DuckDuckGo**: 최신 정보 및 커뮤니티 솔루션 (보조)
 
 ## 통합 워크플로우
 
 ### 새로운 기능 개발 시:
 1. Context7로 관련 기술 문서 조회
-2. Sequential Thinking으로 구현 계획 수립
-3. 필요시 DuckDuckGo로 최신 정보 보완
+2. 필요시 DuckDuckGo로 최신 정보 보완
 4. 단계별 구현 진행
 
 ### 문제 해결 시:
 1. Context7로 공식 문서 확인
 2. DuckDuckGo로 커뮤니티 솔루션 검색
-3. Sequential Thinking으로 해결 방안 도출
 
 이러한 MCP 도구들을 적극적으로 활용하여 프로젝트의 품질과 효율성을 극대화해야 합니다.

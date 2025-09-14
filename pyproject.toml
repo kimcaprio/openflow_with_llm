@@ -214,6 +214,15 @@ llm = [
     "ollama>=0.5.3",
     "openai>=1.107.2",
 ]
+mcp = [
+    "fastapi>=0.116.1",
+    "httpx>=0.28.1",
+    "pydantic>=2.11.9",
+    "uvicorn[standard]>=0.35.0",
+]
 nifi = [
     "psutil>=7.0.0",
+]
+ui = [
+    "streamlit>=1.49.1",
 ]

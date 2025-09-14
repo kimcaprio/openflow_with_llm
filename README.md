@@ -31,28 +31,36 @@
 
 ## 🚀 주요 기능
 
-### 1. 자연어 기반 플로우 생성
+### 1. 자연어 기반 NiFi 제어
 ```
-"CSV 파일을 읽어서 JSON으로 변환하고 Kafka에 전송해줘"
-↓
-자동으로 GetFile → ConvertRecord → PublishKafka 플로우 생성
+"List all process groups"
+"Create a GetFile processor"
+"Start the data processing flow"
+"Search for Kafka processors"
+"What's the status of my NiFi instance?"
 ```
 
-### 2. 지능형 최적화
-- 성능 병목 지점 자동 감지
-- 리소스 사용량 최적화
-- 에러 처리 로직 자동 생성
+### 2. MCP (Model Context Protocol) 서버
+- 자연어 쿼리를 NiFi API 호출로 변환
+- 실시간 NiFi 상태 모니터링
+- 지능형 의도 추출 및 파라미터 매핑
 
 ### 3. 다양한 LLM 모델 지원
 - OpenAI GPT-4/3.5-turbo
 - Anthropic Claude
 - Google Gemini
-- Local Ollama 모델
+- 패턴 매칭 폴백 지원
 
-### 4. 웹 기반 사용자 인터페이스
-- 직관적인 플로우 생성 인터페이스
-- 실시간 플로우 모니터링
-- 템플릿 관리 및 공유
+### 4. 웹 기반 채팅 인터페이스
+- Streamlit 기반 대화형 UI
+- 실시간 NiFi 상태 확인
+- 예제 쿼리 및 도움말 제공
+
+### 5. 포괄적인 NiFi 통합
+- 프로세스 그룹 관리
+- 프로세서 생성/시작/중지
+- 연결 및 템플릿 관리
+- 컴포넌트 검색 및 문서화
 
 ## 🏗️ 시스템 아키텍처
 
@@ -130,63 +138,89 @@ vim config/nifi_config.yaml
 
 ### 1. 서버 시작
 
+#### UV 환경에서 실행 (권장)
 ```bash
-# API 서버 시작
-python -m src.api.main
+# MCP 서버 시작
+uv run python src/main.py server
 
-# 웹 UI 시작 (개발 모드)
-cd frontend
-npm start
+# 채팅 UI 시작
+uv run python src/main.py ui
+
+# 둘 다 함께 시작 (개발 모드)
+uv run python src/main.py run
+```
+
+#### 직접 실행
+```bash
+# 간단한 서버 시작
+python run_server.py
+
+# 또는 메인 모듈 사용
+python -m src.main server --host 0.0.0.0 --port 8000
 ```
 
 ### 2. 기본 사용 예제
 
-#### CLI를 통한 플로우 생성
+#### 웹 채팅 인터페이스
+1. 브라우저에서 `http://localhost:8501` 접속
+2. 자연어로 NiFi 질문 입력:
+   - "List all process groups"
+   - "Create a GetFile processor"
+   - "What's the status of my flow?"
+   - "Search for Kafka processors"
+
+#### CLI를 통한 쿼리
 
 ```bash
-python -m src.cli.main create-flow \
-  --description "MySQL에서 데이터를 읽어 Elasticsearch에 저장" \
-  --source mysql \
-  --target elasticsearch
-```
+# 직접 쿼리 전송
+uv run python src/main.py query "List all processors in the root group"
 
-#### Python API 사용
+# NiFi 상태 확인
+uv run python src/main.py nifi status
 
-```python
-from src.core.flow_generator import FlowGenerator
-
-generator = FlowGenerator()
-flow = generator.create_flow(
-    description="로그 파일을 읽어서 에러만 필터링하고 알림 전송",
-    requirements={
-        "source": "log_files",
-        "filter": "error_level",
-        "target": "notification_system"
-    }
-)
+# 시스템 헬스 체크
+uv run python src/main.py health
 ```
 
 #### REST API 사용
 
 ```bash
-curl -X POST "http://localhost:8000/api/v1/flows" \
+# 쿼리 전송
+curl -X POST "http://localhost:8000/query" \
   -H "Content-Type: application/json" \
   -d '{
-    "description": "CSV 파일을 JSON으로 변환하여 Kafka에 전송",
-    "requirements": {
-      "input_format": "csv",
-      "output_format": "json",
-      "target": "kafka"
-    }
+    "query": "Show me all process groups",
+    "session_id": "my_session"
   }'
+
+# 서버 상태 확인
+curl http://localhost:8000/health
+
+# 지원되는 의도 확인
+curl http://localhost:8000/intents
 ```
 
-### 3. 웹 UI 사용
+#### Python API 사용
 
-1. 브라우저에서 `http://localhost:3000` 접속
-2. 자연어로 요구사항 입력
-3. 생성된 플로우 확인 및 수정
-4. NiFi에 배포
+```python
+import asyncio
+from src.mcp.nifi_mcp_server import MCPRequest, NiFiMCPServer
+
+async def query_nifi():
+    server = NiFiMCPServer()
+    await server.initialize()
+    
+    request = MCPRequest(query="List all processors")
+    response = await server.process_query(request)
+    
+    print(f"Intent: {response.intent}")
+    print(f"Message: {response.message}")
+    print(f"Success: {response.success}")
+    
+    await server.shutdown()
+
+asyncio.run(query_nifi())
+```
 
 ## 📚 API 문서
 
