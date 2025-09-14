@@ -87,7 +87,7 @@
 ### 1. 저장소 클론
 
 ```bash
-git clone https://github.com/your-org/Openflow_with_LLM.git
+git clone https://github.com/kimcaprio/openflow_with_llm
 cd Openflow_with_LLM
 ```
 
@@ -353,9 +353,9 @@ handlers:
 
 ## 📞 지원 및 문의
 
-- **이슈 트래커**: [GitHub Issues](https://github.com/your-org/Openflow_with_LLM/issues)
-- **문서**: [Wiki](https://github.com/your-org/Openflow_with_LLM/wiki)
-- **이메일**: support@your-org.com
+- **이슈 트래커**: [GitHub Issues](https://github.com/kimcaprio/openflow_with_llm/issues)
+- **문서**: [Wiki](https://github.com/kimcaprio/openflow_with_llm/wiki)
+- **이메일**: kimcaprio1@gmail.com
 
 ## 🙏 감사의 말
 

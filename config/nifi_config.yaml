@@ -1,0 +1,189 @@
+# NiFi Configuration for Openflow with LLM Project
+# This file contains NiFi-specific configuration settings
+
+nifi:
+  # Installation paths
+  home: "/Users/kikim/Downloads/nifi-2.4.0"
+  
+  # Web interface configuration
+  web:
+    http:
+      host: "localhost"
+      port: 8080
+    https:
+      host: ""
+      port: ""
+  
+  # API configuration
+  api:
+    base_url: "http://localhost:8080/nifi-api"
+    timeout: 30
+    verify_ssl: false
+    
+  # Authentication (if needed)
+  auth:
+    username: ""
+    password: ""
+    
+  # JVM settings
+  jvm:
+    heap_init: "512m"
+    heap_max: "2g"
+    
+  # Repository directories
+  repositories:
+    database: "${NIFI_HOME}/database_repository"
+    flowfile: "${NIFI_HOME}/flowfile_repository"
+    content: "${NIFI_HOME}/content_repository"
+    provenance: "${NIFI_HOME}/provenance_repository"
+    
+  # Logging
+  logging:
+    level: "INFO"
+    directory: "${NIFI_HOME}/logs"
+    
+  # Cluster configuration (for future use)
+  cluster:
+    enabled: false
+    node_address: "localhost"
+    node_port: 9443
+    
+  # Security configuration
+  security:
+    keystore: ""
+    keystore_password: ""
+    truststore: ""
+    truststore_password: ""
+    
+# Processor configurations for auto-generation
+processors:
+  # Data ingestion processors
+  ingestion:
+    - name: "GetFile"
+      category: "Data Ingestion"
+      description: "Reads files from local filesystem"
+      properties:
+        - "Input Directory"
+        - "File Filter"
+        - "Keep Source File"
+        
+    - name: "GetHTTP"
+      category: "Data Ingestion"
+      description: "Fetches data from HTTP endpoints"
+      properties:
+        - "URL"
+        - "HTTP Method"
+        - "Request Headers"
+        
+    - name: "ConsumeKafka"
+      category: "Data Ingestion"
+      description: "Consumes messages from Kafka topics"
+      properties:
+        - "Kafka Brokers"
+        - "Topic Name"
+        - "Group ID"
+        
+  # Data transformation processors
+  transformation:
+    - name: "JoltTransformJSON"
+      category: "Data Transformation"
+      description: "Transforms JSON using Jolt specifications"
+      properties:
+        - "Jolt Specification"
+        - "Transform Cache Size"
+        
+    - name: "ReplaceText"
+      category: "Data Transformation"
+      description: "Replaces text content using regex"
+      properties:
+        - "Search Value"
+        - "Replacement Value"
+        - "Replacement Strategy"
+        
+    - name: "ConvertRecord"
+      category: "Data Transformation"
+      description: "Converts between different record formats"
+      properties:
+        - "Record Reader"
+        - "Record Writer"
+        
+  # Data routing processors
+  routing:
+    - name: "RouteOnAttribute"
+      category: "Data Routing"
+      description: "Routes FlowFiles based on attributes"
+      properties:
+        - "Routing Strategy"
+        
+    - name: "RouteOnContent"
+      category: "Data Routing"
+      description: "Routes FlowFiles based on content"
+      properties:
+        - "Match Requirement"
+        
+  # Data output processors
+  output:
+    - name: "PutFile"
+      category: "Data Output"
+      description: "Writes FlowFiles to local filesystem"
+      properties:
+        - "Directory"
+        - "Conflict Resolution Strategy"
+        
+    - name: "PutHTTP"
+      category: "Data Output"
+      description: "Sends data to HTTP endpoints"
+      properties:
+        - "URL"
+        - "HTTP Method"
+        - "Request Headers"
+        
+    - name: "PublishKafka"
+      category: "Data Output"
+      description: "Publishes messages to Kafka topics"
+      properties:
+        - "Kafka Brokers"
+        - "Topic Name"
+        - "Message Key Field"
+
+# Template configurations
+templates:
+  # Common data flow patterns
+  patterns:
+    - name: "file_to_kafka"
+      description: "Read files and publish to Kafka"
+      processors: ["GetFile", "ConvertRecord", "PublishKafka"]
+      
+    - name: "http_to_database"
+      description: "Fetch HTTP data and store in database"
+      processors: ["GetHTTP", "JoltTransformJSON", "PutDatabaseRecord"]
+      
+    - name: "kafka_to_file"
+      description: "Consume from Kafka and write to files"
+      processors: ["ConsumeKafka", "RouteOnAttribute", "PutFile"]
+      
+    - name: "csv_to_json"
+      description: "Convert CSV files to JSON format"
+      processors: ["GetFile", "ConvertRecord", "PutFile"]
+
+# LLM integration settings
+llm_integration:
+  # Processor selection criteria
+  selection_criteria:
+    performance_weight: 0.3
+    complexity_weight: 0.2
+    reliability_weight: 0.5
+    
+  # Default processor preferences
+  preferences:
+    data_ingestion: "GetFile"
+    data_transformation: "ConvertRecord"
+    data_routing: "RouteOnAttribute"
+    data_output: "PutFile"
+    
+  # Optimization rules
+  optimization:
+    max_processors_per_flow: 20
+    prefer_builtin_processors: true
+    enable_error_handling: true
+    add_monitoring: true
