@@ -15,9 +15,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import uvicorn
 
-from ..nifi.api_client import NiFiAPIClient, NiFiConnectionConfig, NiFiAPIError
-from ..llm.intent_processor import IntentProcessor, NiFiIntent, ProcessedIntent, create_intent_processor
-from ..utils.config import get_config
+from src.nifi.api_client import NiFiAPIClient, NiFiConnectionConfig, NiFiAPIError
+from src.llm.intent_processor import IntentProcessor, NiFiIntent, ProcessedIntent, create_intent_processor
+from src.utils.config import get_config
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +67,7 @@ class NiFiMCPServer:
         # Initialize NiFi client
         if nifi_config is None:
             nifi_config = NiFiConnectionConfig(
-                base_url=config.get("nifi", {}).get("api", {}).get("base_url", "http://localhost:8080/nifi-api"),
+                base_url=config.get("nifi", {}).get("api", {}).get("base_url", "https://localhost:8443/nifi-api"),
                 username=config.get("nifi", {}).get("auth", {}).get("username"),
                 password=config.get("nifi", {}).get("auth", {}).get("password"),
                 verify_ssl=config.get("nifi", {}).get("api", {}).get("verify_ssl", False),

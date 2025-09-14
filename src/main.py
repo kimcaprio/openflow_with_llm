@@ -17,9 +17,9 @@ import uvicorn
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from mcp.nifi_mcp_server import create_app, NiFiMCPServer
-from utils.config import get_merged_config
-from utils.nifi_manager import NiFiManager
+from src.mcp.nifi_mcp_server import create_app, NiFiMCPServer
+from src.utils.config import get_merged_config
+from src.utils.nifi_manager import NiFiManager
 
 # Configure logging
 logging.basicConfig(
@@ -78,7 +78,7 @@ def server(ctx, host, port, workers, reload):
 @cli.command()
 @click.option('--server-host', default='localhost', help='MCP server host')
 @click.option('--server-port', default=8000, help='MCP server port')
-@click.option('--ui-port', default=8501, help='Streamlit UI port')
+@click.option('--ui-port', default=9501, help='Streamlit UI port')
 @click.pass_context
 def ui(ctx, server_host, server_port, ui_port):
     """Start the Streamlit chat interface."""
@@ -112,7 +112,7 @@ def ui(ctx, server_host, server_port, ui_port):
 @cli.command()
 @click.option('--server-host', default='0.0.0.0', help='MCP server host')
 @click.option('--server-port', default=8000, help='MCP server port')
-@click.option('--ui-port', default=8501, help='Streamlit UI port')
+@click.option('--ui-port', default=9501, help='Streamlit UI port')
 @click.option('--workers', default=1, help='Number of server workers')
 @click.pass_context
 def run(ctx, server_host, server_port, ui_port, workers):
@@ -217,7 +217,7 @@ def query(ctx, query, server_url):
     asyncio.run(send_query())
 
 
-@cli.command()
+@cli.group()
 @click.pass_context
 def nifi(ctx):
     """NiFi management commands."""

@@ -22,7 +22,7 @@
 - **NiFi Home**: `/Users/kikim/Downloads/nifi-2.4.0`
 - **NiFi Version**: 2.4.0
 - **Web UI Port**: 8080
-- **API Base URL**: `http://localhost:8080/nifi-api`
+- **API Base URL**: `https://localhost:8443/nifi-api`
 
 ## 📦 NiFi 설치 확인
 
@@ -180,16 +180,16 @@ if manager.stop():
 ### 1. Web UI 접속
 
 NiFi가 시작된 후 다음 URL로 접속:
-- **Web UI**: http://localhost:8080/nifi
+- **Web UI**: https://localhost:8443/nifi
 
 ### 2. API 엔드포인트 확인
 
 ```bash
 # 시스템 진단 정보
-curl http://localhost:8080/nifi-api/system-diagnostics
+curl https://localhost:8443/nifi-api/system-diagnostics
 
 # 클러스터 정보
-curl http://localhost:8080/nifi-api/controller/cluster
+curl https://localhost:8443/nifi-api/controller/cluster
 ```
 
 ### 3. 상태 확인 스크립트
@@ -204,8 +204,8 @@ curl http://localhost:8080/nifi-api/controller/cluster
 [INFO] NiFi Status:
 [SUCCESS] NiFi is running (PID: 12345)
 [SUCCESS] NiFi API is responding
-[INFO] NiFi Web UI: http://localhost:8080/nifi
-[INFO] NiFi API: http://localhost:8080/nifi-api
+[INFO] NiFi Web UI: https://localhost:8443/nifi
+[INFO] NiFi API: https://localhost:8443/nifi-api
 ```
 
 ## 🛠️ 문제 해결

@@ -8,7 +8,7 @@ import os
 import logging
 from typing import Dict, List, Any, Optional
 import anthropic
-from .base_provider import BaseLLMProvider
+from src.llm.providers.base_provider import BaseLLMProvider
 
 logger = logging.getLogger(__name__)
 

@@ -35,7 +35,7 @@ export NIFI_CONTENT_REPOSITORY_DIRECTORY="${NIFI_HOME}/content_repository"
 export NIFI_PROVENANCE_REPOSITORY_DIRECTORY="${NIFI_HOME}/provenance_repository"
 
 # NiFi API Configuration
-export NIFI_API_URL="http://localhost:8080/nifi-api"
+export NIFI_API_URL="https://localhost:8443/nifi-api"
 
 # Color output for scripts
 export RED='\033[0;31m'

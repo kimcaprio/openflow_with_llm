@@ -162,7 +162,7 @@ python -m src.main server --host 0.0.0.0 --port 8000
 ### 2. 기본 사용 예제
 
 #### 웹 채팅 인터페이스
-1. 브라우저에서 `http://localhost:8501` 접속
+1. 브라우저에서 `http://localhost:9501` 접속
 2. 자연어로 NiFi 질문 입력:
    - "List all process groups"
    - "Create a GetFile processor"

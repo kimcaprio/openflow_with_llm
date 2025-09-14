@@ -16,7 +16,7 @@ nifi:
   
   # API configuration
   api:
-    base_url: "http://localhost:8080/nifi-api"
+    base_url: "https://localhost:8443/nifi-api"
     timeout: 30
     verify_ssl: false
     

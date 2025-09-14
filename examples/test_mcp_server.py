@@ -22,7 +22,7 @@ async def test_mcp_server():
     
     # Create NiFi configuration
     nifi_config = NiFiConnectionConfig(
-        base_url="http://localhost:8080/nifi-api",
+        base_url="https://localhost:8443/nifi-api",
         verify_ssl=False,
         timeout=30
     )
@@ -123,7 +123,7 @@ async def test_nifi_client():
     try:
         # Create NiFi client
         client = create_nifi_client(
-            base_url="http://localhost:8080/nifi-api",
+            base_url="https://localhost:8443/nifi-api",
             verify_ssl=False
         )
         

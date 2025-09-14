@@ -13,9 +13,9 @@ from typing import Dict, List, Optional, Any, Union
 from pydantic import BaseModel, Field
 import asyncio
 
-from .providers.openai_provider import OpenAIProvider
-from .providers.anthropic_provider import AnthropicProvider
-from .providers.base_provider import BaseLLMProvider
+from src.llm.providers.openai_provider import OpenAIProvider
+from src.llm.providers.anthropic_provider import AnthropicProvider
+from src.llm.providers.base_provider import BaseLLMProvider
 
 logger = logging.getLogger(__name__)
 

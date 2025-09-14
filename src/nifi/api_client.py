@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 class NiFiConnectionConfig(BaseModel):
     """Configuration for NiFi connection."""
-    base_url: str = Field(default="http://localhost:8080/nifi-api", description="NiFi API base URL")
+    base_url: str = Field(default="https://localhost:8443/nifi-api", description="NiFi API base URL")
     username: Optional[str] = Field(default=None, description="Username for authentication")
     password: Optional[str] = Field(default=None, description="Password for authentication")
     verify_ssl: bool = Field(default=False, description="Whether to verify SSL certificates")
@@ -643,7 +643,7 @@ class NiFiAPIClient:
 
 # Convenience function for creating a configured client
 def create_nifi_client(
-    base_url: str = "http://localhost:8080/nifi-api",
+    base_url: str = "https://localhost:8443/nifi-api",
     username: Optional[str] = None,
     password: Optional[str] = None,
     **kwargs

@@ -43,7 +43,7 @@ class NiFiManager:
         
         # API configuration
         self.api_base_url = self.config.get('nifi', {}).get('api', {}).get('base_url', 
-                                                            'http://localhost:8080/nifi-api')
+                                                            'https://localhost:8443/nifi-api')
         self.api_timeout = self.config.get('nifi', {}).get('api', {}).get('timeout', 30)
         
     def _load_config(self) -> Dict[str, Any]:

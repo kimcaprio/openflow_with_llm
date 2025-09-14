@@ -154,7 +154,7 @@ def get_env_config() -> Dict[str, Any]:
         "nifi": {
             "home": os.getenv("NIFI_HOME", "/Users/kikim/Downloads/nifi-2.4.0"),
             "api": {
-                "base_url": os.getenv("NIFI_BASE_URL", "http://localhost:8080/nifi-api"),
+                "base_url": os.getenv("NIFI_BASE_URL", "https://localhost:8443/nifi-api"),
                 "timeout": int(os.getenv("NIFI_TIMEOUT", "30")),
                 "verify_ssl": os.getenv("NIFI_VERIFY_SSL", "false").lower() == "true"
             },
